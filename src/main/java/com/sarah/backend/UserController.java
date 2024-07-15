@@ -24,8 +24,12 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+    public String createUser(@RequestBody User user) {
+        // check if user already exists
+        if (userRepository.findByName(user.getName()) != null) {
+            return "User already exists";
+        }
+        return userRepository.save(user).toString();
     }
 
      @GetMapping("/{id}")
@@ -41,5 +45,10 @@ public class UserController {
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         return userRepository.save(user);
+    }
+
+    @GetMapping("/crazy")
+    public String crazy() {
+        return "Crazy";
     }
 }
